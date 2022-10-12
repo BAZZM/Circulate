@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if user.email in regEmails %}
+            <header class="masthead">
+                <div class="container position-relative">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-6">
+                            <div class="text-center text-white">
+                                <h1 class="mb-5">You've landed at
+                                    <div style="color:white">Circulate.</div>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="jumbotron">
+                <p class="lead">Welcome, {{ user.member.firstName }} below you can see your inner circle.</p>
+                <hr class="my-4">
+                <p>Don't forget to keep this list up to date!</p>
+                <p class="lead">
+                    <a class="btn btn-secondary btn-lg" href="{% url 'import-contacts' %}" role="button">Update
+                        contacts?</a>
+                </p>
+            </div>
+            {% for contacts in contactList %}
+                <div class="list-group bg-2" role="alert">
+                    {% for contact in contacts %}
+                        <div class="jumbotron">
+                            <hr class="my-4">
+                        </div>
+                        <a href="/outerCircle/{{ contact.phoneNumber }}" class="list-group-item list-group-item-action"
+                           aria-current="true">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ contact.firstName }} {{ contact.lastName }}</h5>
+                                <small></small>
+                            </div>
+                            <p class="mb-1">Phone Number: {{ contact.phoneNumber }}</p>
+                            <p class="mb-1">Job Description: {{ contact.jobDesc }}</p>
+                            <small>Years Experience: {{ contact.yearsExperience }}</small>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <h2>Why don't you complete your profile so you can
+                href="{% url 'complete' %}">register?</>
+            </h2>
+        {% endif %}
+
+
+        <br>
+        <p><a href="{% url 'logout' %}">
+            <button type="button" class="btn btn-secondary btn-lg">Log Out</button>
+        </a></p>
+    {% else %}
+        <header class="masthead">
+            <div class="container position-relative">
+                <div class="row justify-content-center">
+                    <div class="col-xl-6">
+                        <div class="text-center text-white">
+                            <h1 class="mb-5">You've landed at
+                                <div style="color:white">Circulate.</div>
+                            </h1>
+                            <h2>You're not logged in at the minute.. would you like to <a href="{% url 'register' %}">register?</a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <p><a href="{% url 'login' %}">
+            <button type="button" class="btn btn-secondary btn-lg">Log In</button>
+        </a></p>
+    {% endif %}
+{% endblock %}
+
+
+{% block title %}Home{% endblock %}

@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+
+        <div class="jumbotron">
+            <h5 class="section-title h1">Requests</h5>
+            <hr class="my-4">
+            <p class="lead">Here are your inner circle and mutual requests and your mutual requests to approve...
+                <br>
+                <br>
+                <small>
+                    if you want.
+                </small>
+            </p>
+        </div>
+        <br>
+        <h4 class="section-title h2">Waiting on approval...</h4>
+        <div class="list-group" role="alert">
+            {% for req in requestsSent %}
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">
+                        {{ req.requestee.firstName }} {{ req.requestee.lastName }}
+                    </h5>
+                    <a href="deleteRequest/{{ req.sender.phoneNumber }}/{{ req.requestee.phoneNumber }}">
+                        <strong>
+                            <button type="button" class="btn-close btn-close-white" aria-label="Close">
+                            </button>
+                        </strong>
+                    </a>
+                </div>
+                <p class="mb-1">
+                    JobDesc: {{ req.requestee.jobDesc }}<br>
+                    Years Experience: {{ req.requestee.yearsExperience }}
+                </p>
+                <p class="mb-1">
+                    <small>
+                        Mutual Contact: {{ req.mutual.firstName }}
+                    </small>
+                </p>
+                <div class="jumbotron">
+                    <hr class="my-4">
+                </div>
+            {% endfor %}
+        </div>
+        <br>
+        <h4 class="section-title h2">
+            Incoming inner circle requests
+        </h4>
+        <br>
+        <div class="list-group" role="alert">
+            {% for req in waitingApprovalR %}
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">
+                        {{ req.sender.firstName }} {{ req.sender.lastName }}
+                    </h5>
+                    <a href="deleteRequest/{{ req.sender.phoneNumber }}/{{ req.requestee.phoneNumber }}">
+                        <strong>
+                            <button type="button" class="btn-close btn-close-white" aria-label="Close">
+                            </button>
+                        </strong>
+                    </a>
+                </div>
+                <p class="mb-1">
+                    JobDesc: {{ req.sender.jobDesc }}<br>
+                    Years Experience: {{ req.sender.yearsExperience }}
+                </p>
+                <a href="acceptRequestAuth/{{ req.sender.phoneNumber }}/{{ req.mutual.phoneNumber }}/{{ req.requestee.phoneNumber }}/2">
+                    <button type="button" class="btn btn-light btn-sm">Accept</button>
+                </a>
+                <p class="mb-1">
+                    <small>
+                        Mutual Contact: {{ req.mutual.firstName }}
+                    </small>
+                </p>
+                <div class="jumbotron">
+                    <hr class="my-4">
+                </div>
+            {% endfor %}
+        </div>
+        <br>
+        <h4 class="section-title h2">Authorise new mutual connection</h4>
+        <div class="list-group" role="alert">
+            {% for req in waitingApprovalM %}
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">
+                        {{ req.sender.firstName }} {{ req.sender.lastName }}
+                        / {{ req.requestee.firstName }} {{ req.requestee.lastName }}
+                    </h5>
+                    <a href="deleteRequest/{{ req.sender.phoneNumber }}/{{ req.requestee.phoneNumber }}">
+                        <div class="close">
+                            <button type="button" class="btn-close btn-close-white" aria-label="Close">
+                            </button>
+                        </div>
+                    </a>
+                </div>
+                <p class="mb-1">
+                    JobDesc: {{ req.sender.jobDesc }}<br>
+                    Years Experience: {{ req.sender.yearsExperience }}
+                    <a href="acceptRequestAuth/{{ req.sender.phoneNumber }}/{{ req.mutual.phoneNumber }}/{{ req.requestee.phoneNumber }}/1">
+                        <button type="button" class="btn btn-light btn-rounded btn-rounded">Accept</button>
+                    </a>
+                </p>
+                <div class="jumbotron">
+                    <hr class="my-4">
+                </div>
+            {% endfor %}
+        </div>
+        <p>
+            <a href="{% url 'logout' %}">
+                <button type="button" class="btn btn-dark">
+                    Log Out
+                </button>
+            </a>
+        </p>
+    {% else %}
+        <p>
+            You are not logged in.
+        </p>
+        <br>
+        <p>
+            <a href="{% url 'login' %}">
+                <button type="button" class="btn btn-dark">
+                    Log In
+                </button>
+            </a>
+        </p>
+    {% endif %}
+{% endblock %}
+
+
+{% block title %}Home{% endblock %}

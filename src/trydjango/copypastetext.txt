@@ -1,0 +1,2 @@
+{% endblock %}{% block title %}
+    path('', views.index, name='index'),

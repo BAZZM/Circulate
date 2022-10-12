@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <p class="lead">Hey {{ user.member.firstName }}, <br> You're looking at {{ outerContact.firstName }}'s circle
+            excluding any in your circle.<br> {{ mutualSize }} mutual contacts.</p>
+        <h5 class="section-title h1">Outer Circle</h5>
+        <div class="row" role="alert">
+            {% for contacts in contactList %}
+                {% for contact in contacts %}
+                    <div class="col-xs-12 col-sm-6 col-md-3">
+                        <div class="image-flip">
+                            <div class="mainflip flip-0">
+                                <div class="frontside">
+                                    <div class="card">
+                                        <p><img class=" img-fluid" src="https://i.ibb.co/m0JzS23/Avatar.png"
+                                                alt="card image"></p>
+                                        <h4 class="card-title">{{ contact.firstName }} {{ contact.lastName }}</h4>
+                                        <small></small>
+                                        <div class="card-body text-center">
+                                            <p class="mb-1">Job Description: {{ contact.jobDesc }}</p>
+                                            <small>Years Experience: {{ contact.yearsExperience }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="backside">
+                                    <div class="card">
+                                        <p>
+                                        <h4>
+                                            <center>Add this person to your contacts. </br> Your mutual friend within
+                                                your inner circle will have to approve the request first!
+                                            </center>
+                                        </h4>
+                                        </p>
+                                        <p></p>
+                                        <a href="/openRequest/{{ user.member.phoneNumber }}/{{ outerContact.phoneNumber }}/{{ contact.phoneNumber }}">Add
+                                            your contact</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+
+
+
+        <br>
+        <p><a href="{% url 'logout' %}">
+            <button type="button" class="btn btn-dark">Log Out</button>
+        </a></p>
+    {% else %}
+        <p>You are not logged in</p>
+        <br>
+        <p><a href="{% url 'login' %}">
+            <button type="button" class="btn btn-dark">Log In</button>
+        </a></p>
+    {% endif %}
+{% endblock %}
+
+
+{% block title %}Home{% endblock %}
+  

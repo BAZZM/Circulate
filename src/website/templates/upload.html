@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Upload Page
+{% endblock title %}
+
+{% block content %}
+<form action="" method="POST" class= "form-group mb-3" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form}}
+    <button type="submit" class="btn btn-secondary">Confirm</button>
+</form>
+{% endblock content %}
